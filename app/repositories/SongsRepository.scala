@@ -12,10 +12,7 @@ object SongsRepository {
 
   def findByTitle(title: String) = DB.withConnection { implicit c =>
     findByTitleQuery.on("title" -> toParameterValue("%" + title + "%"))().map {
-      row => {
-        val artist = Artist(row[Long]("artists.id"), row[String]("artists.name"), Some(row[String]("artists.image_url")))
-        Song(row[Long]("songs.id"), row[String]("songs.title"), artist)
-      }
+      row => { new SongMapper(row).get }
     }.toList
   }
 }
