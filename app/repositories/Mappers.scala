@@ -27,3 +27,10 @@ class ScrobbleMapper(row: SqlRow) extends Mapper[Scrobble](row) {
     Scrobble(row[Long]("scrobbles.id"), row[DateTime]("scrobbles.created_at"), song, row[Long]("scrobbles.user_id"))
   }
 }
+
+class RecommendationMapper(row: SqlRow) extends Mapper[Recommendation](row) {
+  override def get = {
+    val song = new SongMapper(row).get
+    Recommendation(row[Long]("recommendations.id"), row[DateTime]("recommendations.created_at"), song, row[Long]("recommendations.user_id"))
+  }
+}
