@@ -19,8 +19,6 @@ object ScrobblesRepository {
       findByIdQuery.on("id" -> id)().map { row =>
         new ScrobbleMapper(row).get
       }.headOption
-    }.getOrElse {
-      None
     }
   }
 }
