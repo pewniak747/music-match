@@ -33,3 +33,4 @@ GET     /not-authorized             securesocial.controllers.ProviderController.
 OPTIONS /api/*path                  org.musicmatch.controllers.HttpOptions.show(path)
 GET     /api/songs                  org.musicmatch.controllers.Songs.index(filter: String ?= "")
 POST    /api/me/scrobbles           org.musicmatch.controllers.Scrobbles.create
+GET     /api/me/recommendations     org.musicmatch.controllers.Recommendations.index
