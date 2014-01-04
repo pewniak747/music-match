@@ -13,6 +13,7 @@ import org.musicmatch.repositories.AnormExtensions._
 object ScrobblesRepository {
   lazy val createQuery = SQL("INSERT INTO scrobbles (user_id, song_id, created_at) VALUES({userId}, {songId}, {createdAt})")
   lazy val findByIdQuery = SQL("SELECT * FROM scrobbles INNER JOIN songs ON scrobbles.song_id = songs.id INNER JOIN artists ON songs.artist_id = artists.id WHERE scrobbles.id = {id}")
+  lazy val countByUserIdQuery = SQL("SELECT count(*) FROM scrobbles WHERE scrobbles.user_id = {userId} AND scrobbles.created_at > {startTime}")
 
   def create(userId: Long, songId: Long) = DB.withConnection { implicit c =>
     createQuery.on("userId" -> userId, "songId" -> songId, "createdAt" -> toParameterValue(DateTime.now)).executeInsert().map { id =>
@@ -20,5 +21,9 @@ object ScrobblesRepository {
         new ScrobbleMapper(row).get
       }.headOption
     }
+  }
+
+  def count(userId: Long, startTime: DateTime) = DB.withConnection { implicit c =>
+    countByUserIdQuery.on("userId" -> userId, "startTime" -> startTime)().head[Long]("count")
   }
 }
