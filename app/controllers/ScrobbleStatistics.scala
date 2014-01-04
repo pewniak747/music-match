@@ -6,7 +6,7 @@ import play.api.libs.json
 import play.api.libs.json.Json
 import play.api.libs.json.Writes
 
-import org.musicmatch.models.ScrobbleStatistics
+import org.musicmatch.models
 import org.musicmatch.services
 
 object ScrobbleStatistics extends Controller {
@@ -21,8 +21,8 @@ object ScrobbleStatistics extends Controller {
 
   val userId = 1 // TODO: different users
 
-  implicit val scrobbleStatisticsWrites = new Writes[ScrobbleStatistics] {
-    def writes(statistics: ScrobbleStatistics) = Json.obj(
+  implicit val scrobbleStatisticsWrites = new Writes[models.ScrobbleStatistics] {
+    def writes(statistics: models.ScrobbleStatistics) = Json.obj(
       "total_count" -> statistics.totalCount,
       "last_week_count" -> statistics.lastWeekCount,
       "last_month_count" -> statistics.lastMonthCount
