@@ -8,6 +8,11 @@ GET     /                           controllers.Application.index
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+# OAuth2
+POST    /oauth2/authorize           org.musicmatch.controllers.OAuth2.authorize
+POST    /oauth2/refresh             org.musicmatch.controllers.OAuth2.refresh
+POST    /oauth2/revoke              org.musicmatch.controllers.OAuth2.revoke
+
 # API
 OPTIONS /api/*path                  org.musicmatch.controllers.HttpOptions.show(path)
 GET     /api/songs                  org.musicmatch.controllers.Songs.index(filter: String ?= "")
