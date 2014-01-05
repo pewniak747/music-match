@@ -7,6 +7,7 @@ import java.util.Date
 import org.musicmatch.models.User
 import org.musicmatch.models.EncryptedPassword
 import org.musicmatch.repositories.UsersRepository
+import org.musicmatch.repositories.OAuth2AccessTokensRepository
 
 class OAuth2Service extends DataHandler[User] {
 
@@ -31,22 +32,22 @@ class OAuth2Service extends DataHandler[User] {
     val token = Randomness.hex
     val refreshToken = Randomness.hex
     val accessToken = new AccessToken(token, Some(refreshToken), authInfo.scope, Some(timeout), new Date)
-    AccessToken.store(authInfo.user.id, accessToken)
+    OAuth2AccessTokensRepository.create(authInfo.user.id, accessToken)
     accessToken
   }
 
-  def getStoredAccessToken(authInfo: AuthInfo[User]): Option[AccessToken] = AccessToken.findByUserId(authInfo.user.id) match {
+  def getStoredAccessToken(authInfo: AuthInfo[User]): Option[AccessToken] = OAuth2AccessTokensRepository.findByUserId(authInfo.user.id) match {
     case Some((id, accessToken)) => Some(accessToken)
     case _ => None
   }
 
-  def findAccessToken(token: String): Option[AccessToken] = AccessToken.findByToken(token) match {
+  def findAccessToken(token: String): Option[AccessToken] = OAuth2AccessTokensRepository.findByToken(token) match {
     case Some((id, accessToken)) => Some(accessToken)
     case _ => None
   }
 
   def findAuthInfoByAccessToken(accessToken: AccessToken): Option[AuthInfo[User]] = {
-    AccessToken.findByToken(accessToken.token) match {
+    OAuth2AccessTokensRepository.findByToken(accessToken.token) match {
       case Some((id, accessToken)) => {
         UsersRepository.findById(id) match {
           case Some(user) => Some(AuthInfo(user, "", accessToken.scope, None))
@@ -74,15 +75,4 @@ class OAuth2Service extends DataHandler[User] {
       OAuth2Client("clientid", "clientsecret")
     )
   }
-
-  object AccessToken {
-    def findByToken(token: String) = all.find(_._2.token == token)
-
-    def findByUserId(userId: Long) = all.find(_._1 == userId)
-
-    def store(userId: Long, accessToken: AccessToken) = all += ((userId, accessToken))
-
-    var all = mutable.Set[(Long, AccessToken)]()
-  }
-
 }
