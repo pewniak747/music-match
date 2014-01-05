@@ -8,7 +8,7 @@ object Global extends GlobalSettings {
   override def doFilter(action: EssentialAction) = EssentialAction { request =>
     action(request).map(_.withHeaders(
       ACCESS_CONTROL_ALLOW_ORIGIN -> "*",
-      ACCESS_CONTROL_ALLOW_HEADERS -> "Content-Type"
+      ACCESS_CONTROL_ALLOW_HEADERS -> "Content-Type,Authorization"
     ))
   }
 }
