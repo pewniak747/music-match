@@ -5,7 +5,7 @@ import java.math.BigInteger
 
 object Randomness {
   def hex = {
-    new BigInteger(126, random).toString(16)
+    new BigInteger(128, random).toString(16)
   }
 
   lazy val random = new SecureRandom
