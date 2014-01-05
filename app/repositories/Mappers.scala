@@ -34,3 +34,7 @@ class RecommendationMapper(row: SqlRow) extends Mapper[Recommendation](row) {
     Recommendation(row[Long]("recommendations.id"), row[DateTime]("recommendations.created_at"), song, row[Long]("recommendations.user_id"))
   }
 }
+
+class UserMapper(row: SqlRow) extends Mapper[User](row) {
+  override def get = User(row[Long]("users.id"), row[String]("users.email"), row[String]("users.encrypted_password"))
+}
