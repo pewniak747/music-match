@@ -11,15 +11,13 @@ import org.musicmatch.services
 
 object ScrobbleStatistics extends Controller {
 
-  def show = Action { request =>
-    val service = new services.ScrobbleStatistics(userId)
+  def show = AuthenticatedAction { request =>
+    val service = new services.ScrobbleStatistics(request.user.id)
     val scrobbleStatistics = service.getStatistics
     Ok(Json.toJson(scrobbleStatistics))
   }
 
   private
-
-  val userId = 1 // TODO: different users
 
   implicit val scrobbleStatisticsWrites = new Writes[models.ScrobbleStatistics] {
     def writes(statistics: models.ScrobbleStatistics) = Json.obj(

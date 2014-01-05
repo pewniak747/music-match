@@ -11,14 +11,12 @@ import org.musicmatch.repositories.RecommendationsRepository
 
 object Recommendations extends Controller {
 
-  def index = Action { request =>
-    val recommendations = RecommendationsRepository.findByUserId(userId)
+  def index = AuthenticatedAction { request =>
+    val recommendations = RecommendationsRepository.findByUserId(request.user.id)
     Ok(Json.toJson(Map("items" -> recommendations)))
   }
 
   private
-
-  val userId = 1 // TODO: different users
 
   implicit val recommendationWrites = new Writes[Recommendation] {
     def writes(recommendation: Recommendation) = Json.obj(

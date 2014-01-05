@@ -11,7 +11,7 @@ import org.musicmatch.repositories.SongsRepository
 
 object Songs extends Controller {
 
-  def index(filter: String) = Action { request =>
+  def index(filter: String) = AuthenticatedAction {
     val songs = SongsRepository.findByTitle(filter)
     Ok(Json.toJson(Map("items" -> songs)))
   }

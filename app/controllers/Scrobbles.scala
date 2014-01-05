@@ -11,9 +11,9 @@ import org.musicmatch.repositories.ScrobblesRepository
 
 object Scrobbles extends Controller {
 
-  def create = Action(parse.json) { request =>
+  def create = AuthenticatedAction(parse.json) { request =>
     (request.body \ "song_id").asOpt[Long].map { songId =>
-      ScrobblesRepository.create(userId, songId).map { scrobble =>
+      ScrobblesRepository.create(request.user.id, songId).map { scrobble =>
         Created(Json.toJson(scrobble))
       }.getOrElse {
         BadRequest(Json.obj("error" -> "invalid song id"))
@@ -24,8 +24,6 @@ object Scrobbles extends Controller {
   }
 
   private
-
-  val userId = 1 // TODO: different users
 
   implicit val scrobbleWrites = new Writes[Scrobble] {
     def writes(scrobble: Scrobble) = Json.obj(
