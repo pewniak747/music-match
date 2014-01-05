@@ -12,6 +12,24 @@ Uses Play framework and postgresql database for persistence.
 
 ## REST api
 
+### Authorization
+
+Authorization is performed with OAuth2 protocol.
+
+```
+POST /oauth2/authorize
+
+{
+  "grant_type": "password',
+  "username": "email@example.com",
+  "password": "password",
+  "client_id": "clientid"
+  "client_secret": "clientseret"
+}
+```
+
+All request requiring authorization must be performed with `Authorization: Bearer token` header.
+
 ### Songs
 
 Fetch list of songs, optionally filtered.
