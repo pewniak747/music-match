@@ -4,17 +4,18 @@ import play.api._
 import play.api.mvc._
 import scalaoauth2.provider._
 
+import org.musicmatch.services.OAuth2Service
+
 object OAuth2 extends Controller with OAuth2Provider {
   def authorize = Action { implicit request =>
-    //issueAccessToken(new MyDataHandler())
-    Ok("TODO")
+    issueAccessToken(new OAuth2Service)
   }
 
   def refresh = Action { implicit request =>
-    Ok("TODO")
+    NotImplemented("TODO")
   }
 
   def revoke = Action { implicit request =>
-    Ok("TODO")
+    NotImplemented("TODO")
   }
 }
