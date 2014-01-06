@@ -38,6 +38,14 @@ Fetch list of songs, optionally filtered.
 GET /api/songs?filter=bohemian+rhapsody
 ```
 
+### Current User
+
+Fetch information about currently authenticated user
+
+```
+GET /api/me
+```
+
 ### Scrobbles
 
 Create a scrobble
