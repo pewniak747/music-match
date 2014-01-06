@@ -30,12 +30,18 @@ POST /oauth2/authorize
 
 All request requiring authorization must be performed with `Authorization: Bearer token` header.
 
-### Songs
+### Registration
 
-Fetch list of songs, optionally filtered.
+Register new user
 
 ```
-GET /api/songs?filter=bohemian+rhapsody
+POST /api/registrations
+
+{
+  "email": "email@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
 ```
 
 ### Current User
@@ -44,6 +50,14 @@ Fetch information about currently authenticated user
 
 ```
 GET /api/me
+```
+
+### Songs
+
+Fetch list of songs, optionally filtered.
+
+```
+GET /api/songs?filter=bohemian+rhapsody
 ```
 
 ### Scrobbles
