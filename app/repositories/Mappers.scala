@@ -38,7 +38,7 @@ class RecommendationMapper(row: SqlRow) extends Mapper[Recommendation](row) {
 }
 
 class UserMapper(row: SqlRow) extends Mapper[User](row) {
-  override def get = User(row[Long]("users.id"), row[String]("users.email"), row[String]("users.encrypted_password"))
+  override def get = User(row[Long]("users.id"), row[String]("users.email"), row[String]("users.encrypted_password"), row[DateTime]("users.created_at"))
 }
 
 class OAuth2AccessTokenMapper(row: SqlRow) extends Mapper[AccessToken](row) {

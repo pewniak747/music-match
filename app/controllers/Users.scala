@@ -19,7 +19,8 @@ object Users extends Controller {
   implicit val userWrites = new Writes[User] {
     def writes(user: User) = Json.obj(
       "id" -> user.id,
-      "email" -> user.email
+      "email" -> user.email,
+      "created_at" -> user.createdAt
     )
   }
 }
