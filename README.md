@@ -60,6 +60,12 @@ Fetch list of songs, optionally filtered.
 GET /api/songs?filter=bohemian+rhapsody
 ```
 
+Fetch a list of most played songs.
+
+```
+GET /api/me/songs/statistics
+```
+
 ### Scrobbles
 
 Create a scrobble
