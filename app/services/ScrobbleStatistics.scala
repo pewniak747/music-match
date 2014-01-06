@@ -3,7 +3,7 @@ package org.musicmatch.services
 import com.github.nscala_time.time.Imports._
 
 import org.musicmatch.models
-import org.musicmatch.repositories.ScrobblesRepository
+import org.musicmatch.repositories.{SongsRepository,ScrobblesRepository}
 
 class ScrobbleStatistics(val userId: Long) {
   def getStatistics: models.ScrobbleStatistics = {
@@ -11,5 +11,9 @@ class ScrobbleStatistics(val userId: Long) {
     val lastWeekCount = ScrobblesRepository.count(userId, 1.week.ago)
     val lastMonthCount = ScrobblesRepository.count(userId, 1.month.ago)
     models.ScrobbleStatistics(totalCount, lastWeekCount, lastMonthCount)
+  }
+
+  def getFavouriteSongs: Seq[(models.Song, Long)] = {
+    SongsRepository.findFavouritesByUserId(userId)
   }
 }

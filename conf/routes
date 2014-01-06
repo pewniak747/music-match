@@ -20,4 +20,5 @@ POST    /api/registrations          org.musicmatch.controllers.Registrations.cre
 GET     /api/me                     org.musicmatch.controllers.Users.show
 POST    /api/me/scrobbles           org.musicmatch.controllers.Scrobbles.create
 GET     /api/me/scrobbles/statistics org.musicmatch.controllers.ScrobbleStatistics.show
+GET     /api/me/songs/statistics    org.musicmatch.controllers.Songs.userStatistics
 GET     /api/me/recommendations     org.musicmatch.controllers.Recommendations.index
