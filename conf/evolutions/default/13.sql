@@ -1,0 +1,10 @@
+# --- !Ups
+CREATE TABLE taggings (
+  id SERIAL PRIMARY KEY,
+  song_id INTEGER REFERENCES songs(id) ON DELETE CASCADE NOT NULL,
+  tag_id INTEGER REFERENCES tags(id) ON DELETE CASCADE NOT NULL
+);
+
+# --- !Downs
+
+DROP TABLE taggings;
