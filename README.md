@@ -66,6 +66,14 @@ Fetch a list of most played songs.
 GET /api/me/songs/statistics
 ```
 
+### Artists
+
+Fetch a list of most played artists.
+
+```
+GET /api/me/artists/statistics
+```
+
 ### Scrobbles
 
 Create a scrobble
