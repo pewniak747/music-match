@@ -101,3 +101,9 @@ Fetch user's song recommendations
 ```
 GET /api/me/recommendations
 ```
+
+Schedule a recommendations update
+
+```
+POST /api/me/recommendations
+```
