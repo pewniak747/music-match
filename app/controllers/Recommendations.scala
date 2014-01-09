@@ -8,12 +8,21 @@ import play.api.libs.json.Writes
 
 import org.musicmatch.models.Recommendation
 import org.musicmatch.repositories.RecommendationsRepository
+import org.musicmatch.repositories.RecommendationRequestsRepository
 
 object Recommendations extends Controller {
 
   def index = AuthenticatedAction { request =>
     val recommendations = RecommendationsRepository.findByUserId(request.user.id)
     Ok(Json.toJson(Map("items" -> recommendations)))
+  }
+
+  def create = AuthenticatedAction { request =>
+    RecommendationRequestsRepository.create(request.user.id).map { id =>
+      Ok(Json.obj("id" -> id))
+    }.getOrElse {
+      UnprocessableEntity
+    }
   }
 
   private
