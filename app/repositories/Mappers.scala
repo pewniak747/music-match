@@ -45,3 +45,7 @@ class OAuth2AccessTokenMapper(row: SqlRow) extends Mapper[AccessToken](row) {
   override def get = AccessToken(row[String]("token"), row[Option[String]]("refresh_token"), row[Option[String]]("scope"), row[Option[Long]]("expires_in"), row[Date]("created_at"))
   def getWithUserId = (row[Long]("user_id"), get)
 }
+
+class RecommendationRequestMapper(row: SqlRow) extends Mapper[RecommendationRequest](row) {
+  override def get = RecommendationRequest(row[Long]("id"), row[Long]("user_id"))
+}
