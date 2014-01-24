@@ -11,9 +11,13 @@ import scala.collection.mutable
 case object DispatchRequests
 case object FetchRequests
 case class  RequestsBatch(requestIds: Seq[RecommendationRequest])
+case object WorkAvailable
+case object RequestWork
+case class  RecommendationWork(request: RecommendationRequest)
 
 class RecommendationDispatcher extends Actor {
   val fetcher = context.actorOf(Props[RecommendationRequestFetcher], name = "fetcher")
+  val workers = Vector.fill(5) { context.actorOf(Props[RecommendationWorker]) }
   var queue = mutable.Queue[RecommendationRequest]()
 
   def receive = {
@@ -22,8 +26,15 @@ class RecommendationDispatcher extends Actor {
       if (queue.isEmpty)
         fetcher ! FetchRequests
       else {
+        workers.map(_ ! WorkAvailable)
+      }
+    }
+
+    case RequestWork => {
+      if (!queue.isEmpty) {
         val request = queue.dequeue
         Logger.info("dispatching request: " + request.id)
+        sender ! RecommendationWork(request)
         self ! DispatchRequests
       }
     }
@@ -44,6 +55,19 @@ class RecommendationRequestFetcher extends Actor {
       Logger.info("received fetch request")
       val batch = RecommendationRequestsRepository.newest()
       sender ! new RequestsBatch(batch)
+    }
+  }
+}
+
+class RecommendationWorker extends Actor {
+  def receive = {
+    case RecommendationWork(request) => {
+      Logger.info("processing request: " + request.id)
+      // TODO: implement recommendations
+      sender ! RequestWork
+    }
+    case WorkAvailable => {
+      context.parent ! RequestWork
     }
   }
 }
