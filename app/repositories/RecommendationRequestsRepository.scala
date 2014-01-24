@@ -8,7 +8,7 @@ import play.api.Play.current
 
 object RecommendationRequestsRepository {
   lazy val createQuery = SQL("INSERT INTO recommendation_requests(user_id) VALUES({userId})")
-  lazy val newestQuery = SQL("SELECT * FROM recommendation_requests LIMIT {limit}")
+  lazy val newestQuery = SQL("SELECT * FROM recommendation_requests ORDER BY created_at ASC LIMIT {limit}")
 
   def create(userId: Long) = DB.withConnection { implicit c =>
     createQuery.on("userId" -> userId).executeInsert()
