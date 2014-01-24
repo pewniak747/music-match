@@ -30,8 +30,10 @@ class RecommendationDispatcher extends Actor {
 
     case RequestsBatch(batch) => {
       Logger.info("received request batch: " + batch.map(_.id).mkString(", "))
-      queue ++= batch
-      self ! DispatchRequests
+      if (!batch.isEmpty) {
+        queue ++= batch
+        self ! DispatchRequests
+      }
     }
   }
 }
