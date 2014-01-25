@@ -5,6 +5,7 @@ import play.Logger
 
 import org.musicmatch.models.RecommendationRequest
 import org.musicmatch.repositories._
+import org.musicmatch.services.Recommendations
 
 import scala.collection.mutable
 
@@ -63,7 +64,7 @@ class RecommendationWorker extends Actor {
   def receive = {
     case RecommendationWork(request) => {
       Logger.info("processing request: " + request.id)
-      // TODO: implement recommendations
+      new Recommendations(request).apply
       sender ! RequestWork
     }
     case WorkAvailable => {
