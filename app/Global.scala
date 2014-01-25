@@ -19,6 +19,6 @@ object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
     val recommendationDispatcher = Akka.system.actorOf(Props[RecommendationDispatcher], name = "dispatcher")
-    Akka.system.scheduler.schedule(0.seconds, 5.seconds, recommendationDispatcher, DispatchRequests)
+    Akka.system.scheduler.schedule(0.seconds, 1.second, recommendationDispatcher, DispatchRequests)
   }
 }
