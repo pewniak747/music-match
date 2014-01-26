@@ -5,19 +5,20 @@ import play.api.mvc._
 import play.api.libs.json
 import play.api.libs.json._
 
-import org.musicmatch.models.Song
+import org.musicmatch.models.{Song,SongQuery}
 import org.musicmatch.repositories.SongsRepository
-import org.musicmatch.services.ScrobbleStatistics
+import org.musicmatch.services
 
 object Songs extends Controller {
 
   def index(filter: String) = AuthenticatedAction {
-    val songs = SongsRepository.findByTitle(filter)
+    val query = new SongQuery(filter)
+    val songs = SongsRepository.findByQuery(query)
     Ok(Json.toJson(Map("items" -> songs)))
   }
 
   def userStatistics = AuthenticatedAction { request =>
-    val statistics = new ScrobbleStatistics(request.user.id)
+    val statistics = new services.ScrobbleStatistics(request.user.id)
     val favourites = statistics.getFavouriteSongs
     Ok(Json.toJson(Map("items" -> favourites)))
   }
