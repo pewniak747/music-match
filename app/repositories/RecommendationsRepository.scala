@@ -9,6 +9,7 @@ import org.musicmatch.repositories.AnormExtensions._
 object RecommendationsRepository {
   lazy val findByUserIdQuery = SQL("SELECT * FROM recommendations INNER JOIN songs ON recommendations.song_id = songs.id INNER JOIN artists ON songs.artist_id = artists.id WHERE recommendations.user_id = {userId} ORDER BY created_at DESC")
   lazy val insertQuery = SQL("INSERT INTO recommendations(user_id, song_id, created_at) VALUES({userId}, {songId}, current_timestamp)")
+  lazy val deleteQuery = SQL("DELETE FROM recommendations WHERE song_id = {songId} AND user_id = {userId}")
 
   def findByUserId(userId: Long) = DB.withConnection { implicit c =>
     findByUserIdQuery.on("userId" -> userId)().map { row =>
@@ -20,5 +21,9 @@ object RecommendationsRepository {
     songIds.foreach { id =>
       insertQuery.on("userId" -> userId, "songId" -> id).executeInsert()
     }
+  }
+
+  def delete(songId: Long, userId: Long) = DB.withConnection { implicit c =>
+    deleteQuery.on("songId" -> songId, "userId" -> userId).execute()
   }
 }

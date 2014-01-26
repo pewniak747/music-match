@@ -15,8 +15,9 @@ object ScrobblesRepository {
   lazy val findByIdQuery = SQL("SELECT * FROM scrobbles INNER JOIN songs ON scrobbles.song_id = songs.id INNER JOIN artists ON songs.artist_id = artists.id WHERE scrobbles.id = {id}")
   lazy val countByUserIdQuery = SQL("SELECT count(*) FROM scrobbles WHERE scrobbles.user_id = {userId} AND scrobbles.created_at > {startTime}")
 
-  def create(userId: Long, songId: Long) = DB.withConnection { implicit c =>
+  def create(userId: Long, songId: Long) = DB.withTransaction { implicit c =>
     createQuery.on("userId" -> userId, "songId" -> songId, "createdAt" -> toParameterValue(DateTime.now)).executeInsert().map { id =>
+      RecommendationsRepository.delete(songId, userId)
       findByIdQuery.on("id" -> id)().map { row =>
         new ScrobbleMapper(row).get
       }.headOption
