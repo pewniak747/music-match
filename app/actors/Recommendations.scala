@@ -65,6 +65,7 @@ class RecommendationWorker extends Actor {
     case RecommendationWork(request) => {
       Logger.info("processing request: " + request.id)
       new Recommendations(request).apply
+      Logger.info("processed request: " + request.id)
       sender ! RequestWork
     }
     case WorkAvailable => {
