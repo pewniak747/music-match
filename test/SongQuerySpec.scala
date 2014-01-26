@@ -48,6 +48,10 @@ class SongQuerySpec extends Specification {
       new SongQuery("Stairway to Heaven by Led Zeppelin").artistName === Some("led zeppelin")
     }
 
+    "returns none if no artist is present after conjunction" in {
+      new SongQuery("stairway to heaven by").artistName === None
+    }
+
     "returns none for empty query" in {
       val query = new SongQuery("")
       (query.songTitle, query.artistName) === (None, None)
