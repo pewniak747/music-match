@@ -10,7 +10,7 @@ import play.api.Play.current
 
 object SongsRepository {
   lazy val findByTitleQuery = SQL("SELECT * FROM songs INNER JOIN artists ON artists.id = songs.artist_id WHERE lower(title) LIKE {title} LIMIT 12")
-  lazy val findByArtistQuery = SQL("SELECT * FROM songs INNER JOIN artists ON artists.id = songs.artist_id WHERE lower(artists.name) LIKE {artist} LIMIT 12")
+  lazy val findByArtistQuery = SQL("SELECT * FROM artists INNER JOIN songs ON artists.id = songs.artist_id WHERE lower(artists.name) LIKE {artist} ORDER BY length(artists.name) LIMIT 12")
   lazy val findByTitleAndArtistQuery = SQL("SELECT * FROM songs INNER JOIN artists ON artists.id = songs.artist_id WHERE lower(title) LIKE {title} AND lower(artists.name) LIKE {artist} ORDER BY length(title) LIMIT 12")
   lazy val findFavouritesQuery = SQL("SELECT songs.*, artists.*, count(scrobbles) FROM songs INNER JOIN artists ON artists.id = songs.artist_id INNER JOIN scrobbles ON scrobbles.song_id = songs.id WHERE scrobbles.user_id = {userId} GROUP BY songs.id, artists.id ORDER BY count(scrobbles) DESC LIMIT 10")
 
